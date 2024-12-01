@@ -1,12 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FilterButton from "./components/FilterButton";
 import Form from "./components/Form";
 import Todo, { TodoProps } from "./components/Todo";
 import { nanoid } from "nanoid";
-
-interface AppProps {
-  tasks: any[];
-}
 
 const FILTER_MAP: {
   [key: string]: (task: TodoProps) => boolean | undefined;
@@ -18,8 +14,14 @@ const FILTER_MAP: {
 
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
-const App = ({ tasks }: AppProps) => {
-  const [currentTasks, setTasks] = useState(tasks);
+const App = () => {
+  const [currentTasks, setTasks] = useState<Array<any>>([]);
+
+  useEffect(() => {
+    fetch("/api/todos")
+      .then((response) => response.json())
+      .then((json) => setTasks(json));
+  }, []);
 
   const addTask = (name: string) => {
     const newTask = { id: `todo-${nanoid()}`, name, completed: false };
