@@ -99,6 +99,9 @@ body {
   background-color: #1e88e5;
   color: #fff;
 }
+.btn__primary:disabled {
+  background-color: gray;
+}
 .btn-group {
   display: flex;
   justify-content: space-between;

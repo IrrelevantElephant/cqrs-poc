@@ -16,12 +16,15 @@ const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 const App = () => {
   const [currentTasks, setTasks] = useState<Array<any>>([]);
+  const [loadingTasks, setLoadingTasks] = useState(false);
 
-  useEffect(() => {
+  const retrieveClickHandler = () => {
+    setLoadingTasks(true);
     fetch("/api/todos")
       .then((response) => response.json())
-      .then((json) => setTasks(json));
-  }, []);
+      .then((json) => setTasks(json))
+      .finally(() => setLoadingTasks(false));
+  };
 
   const addTask = (name: string) => {
     const newTask = { id: `todo-${nanoid()}`, name, completed: false };
@@ -97,6 +100,15 @@ const App = () => {
   return (
     <div className="todoapp stack-large">
       <h1>TodoMatic</h1>
+      <div>
+        <button
+          className="btn btn__primary btn__lg"
+          onClick={() => retrieveClickHandler()}
+          disabled={loadingTasks}
+        >
+          {loadingTasks ? "Loading tasks..." : "Retrieve tasks"}
+        </button>
+      </div>
       <Form onSubmit={addTask} />
       <div className="filters btn-group stack-exception">{filterList}</div>
       <h2 id="list-heading">{headingText}</h2>
