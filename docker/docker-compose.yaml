@@ -1,0 +1,15 @@
+services:
+  ui:
+    build:
+      context: ../ui
+      dockerfile: Dockerfile
+    networks:
+      - default
+    ports:
+      - 8000:80
+    develop:
+      watch:
+        - path: ../ui/
+          action: rebuild
+          ignore:
+            - "../ui/node_modules"
