@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FilterButton from "./components/FilterButton";
 import Form from "./components/Form";
 import Todo, { TodoProps } from "./components/Todo";
@@ -26,49 +26,31 @@ const App = () => {
       .finally(() => setLoadingTasks(false));
   };
 
-  const addTask = (name: string) => {
+  const addTask = async (name: string) => {
     const newTask = { id: `todo-${nanoid()}`, name, completed: false };
-    setTasks([...currentTasks, newTask]);
+    const body = JSON.stringify(newTask);
+    await fetch("/api/todos", { method: "POST", body: body });
   };
 
-  const deleteTask = (id: string) => {
-    const updatedTasks = currentTasks.filter((t) => t.id !== id);
-    setTasks(updatedTasks);
+  const deleteTask = async (id: string) => {
+    await fetch(`/api/todos/${id}`, { method: "DELETE" });
   };
 
   const [filter, setFilter] = useState("All");
 
-  const editTask = (id: string, newName: string) => {
-    const editedTaskList = currentTasks.map((task) => {
-      // if this task has the same ID as the edited task
-      if (id === task.id) {
-        // Copy the task and update its name
-        return { ...task, name: newName };
-      }
-      // Return the original task if it's not the edited task
-      return task;
-    });
-    setTasks(editedTaskList);
+  const editTask = async (id: string, newName: string) => {
+    const taskToUpdate = currentTasks.find((t) => t.id === id);
+    const body = JSON.stringify({ ...taskToUpdate, name: newName });
+    await fetch(`/api/todos/${id}`, { method: "PUT", body: body });
   };
 
-  const toggleTaskCompleted = (id: string) => {
-    console.log({ id: id, tasks: currentTasks });
-    const updatedTasks = currentTasks.map((task) => {
-      // if this task has the same ID as the edited task
-      if (id === task.id) {
-        // use object spread to make a new object
-        // whose `completed` prop has been inverted
-        console.log(
-          `setting task ${id} as ${
-            task.completed ? "not completed" : "completed"
-          }`
-        );
-        return { ...task, completed: !task.completed };
-      }
-      return task;
+  const toggleTaskCompleted = async (id: string) => {
+    const taskToUpdate = currentTasks.find((t) => t.id === id);
+    const body = JSON.stringify({
+      ...taskToUpdate,
+      completed: !taskToUpdate.completed,
     });
-    console.log({ id: id, updatedTasks: updatedTasks });
-    setTasks(updatedTasks);
+    await fetch(`/api/todos/${id}`, { method: "PUT", body: body });
   };
 
   const taskList = currentTasks
