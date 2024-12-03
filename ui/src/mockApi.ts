@@ -1,6 +1,6 @@
 import { createServer } from "miragejs";
 
-const mockApi = () => {
+const createMockApi = () => {
   const server = createServer({
     routes() {
       this.get("/api/todos", (schema, _) => schema.db.todos);
@@ -35,4 +35,4 @@ const mockApi = () => {
   return server;
 };
 
-export default mockApi;
+export default createMockApi;

@@ -14,13 +14,23 @@ const FILTER_MAP: {
 
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
+const getApiUrl = (): string => {
+  if (process.env.NODE_ENV === "development") {
+    return "/api";
+  } else {
+    return import.meta.env.VITE_API_URL;
+  }
+};
+
+const baseApi = getApiUrl();
+
 const App = () => {
   const [currentTasks, setTasks] = useState<Array<any>>([]);
   const [loadingTasks, setLoadingTasks] = useState(false);
 
   const retrieveClickHandler = () => {
     setLoadingTasks(true);
-    fetch("/api/todos")
+    fetch(`${baseApi}/todos`)
       .then((response) => response.json())
       .then((json) => setTasks(json))
       .finally(() => setLoadingTasks(false));
@@ -29,11 +39,11 @@ const App = () => {
   const addTask = async (name: string) => {
     const newTask = { id: `todo-${nanoid()}`, name, completed: false };
     const body = JSON.stringify(newTask);
-    await fetch("/api/todos", { method: "POST", body: body });
+    await fetch(`${baseApi}/todos`, { method: "POST", body: body });
   };
 
   const deleteTask = async (id: string) => {
-    await fetch(`/api/todos/${id}`, { method: "DELETE" });
+    await fetch(`${baseApi}/todos/${id}`, { method: "DELETE" });
   };
 
   const [filter, setFilter] = useState("All");
@@ -41,7 +51,7 @@ const App = () => {
   const editTask = async (id: string, newName: string) => {
     const taskToUpdate = currentTasks.find((t) => t.id === id);
     const body = JSON.stringify({ ...taskToUpdate, name: newName });
-    await fetch(`/api/todos/${id}`, { method: "PUT", body: body });
+    await fetch(`${baseApi}/todos/${id}`, { method: "PUT", body: body });
   };
 
   const toggleTaskCompleted = async (id: string) => {
@@ -50,7 +60,7 @@ const App = () => {
       ...taskToUpdate,
       completed: !taskToUpdate.completed,
     });
-    await fetch(`/api/todos/${id}`, { method: "PUT", body: body });
+    await fetch(`${baseApi}/todos/${id}`, { method: "PUT", body: body });
   };
 
   const taskList = currentTasks
