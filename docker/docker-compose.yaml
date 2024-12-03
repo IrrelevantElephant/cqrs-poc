@@ -13,3 +13,13 @@ services:
           action: rebuild
           ignore:
             - "../ui/node_modules"
+
+  bff:
+    build:
+      context: ..
+      dockerfile: ./Bff/Dockerfile
+    networks:
+      - default
+    ports:
+      - 8080:8080
+      - 8081:8081
