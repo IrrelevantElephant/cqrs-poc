@@ -39,7 +39,13 @@ const App = () => {
   const addTask = async (name: string) => {
     const newTask = { id: `todo-${nanoid()}`, name, completed: false };
     const body = JSON.stringify(newTask);
-    await fetch(`${baseApi}/todos`, { method: "POST", body: body });
+    await fetch(`${baseApi}/todos`, {
+      method: "POST",
+      body: body,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   const deleteTask = async (id: string) => {
@@ -51,7 +57,13 @@ const App = () => {
   const editTask = async (id: string, newName: string) => {
     const taskToUpdate = currentTasks.find((t) => t.id === id);
     const body = JSON.stringify({ ...taskToUpdate, name: newName });
-    await fetch(`${baseApi}/todos/${id}`, { method: "PUT", body: body });
+    await fetch(`${baseApi}/todos/${id}`, {
+      method: "PUT",
+      body: body,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   const toggleTaskCompleted = async (id: string) => {
@@ -60,7 +72,13 @@ const App = () => {
       ...taskToUpdate,
       completed: !taskToUpdate.completed,
     });
-    await fetch(`${baseApi}/todos/${id}`, { method: "PUT", body: body });
+    await fetch(`${baseApi}/todos/${id}`, {
+      method: "PUT",
+      body: body,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   const taskList = currentTasks

@@ -18,11 +18,16 @@ services:
     build:
       context: ..
       dockerfile: ./Bff/Dockerfile
+    environment:
+      - ConnectionString=Host=database;Port=5432;Username=postgres;Password=password;Database=todos
     networks:
       - default
     ports:
       - "8080:8080"
       - "8081:8081"
+    depends_on:
+      migrator:
+        condition: service_completed_successfully
       
   migrator:
     build:
