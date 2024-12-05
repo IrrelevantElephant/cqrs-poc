@@ -6,7 +6,7 @@ services:
     networks:
       - default
     ports:
-      - 8000:80
+      - "8000:80"
     develop:
       watch:
         - path: ../ui/
@@ -21,5 +21,32 @@ services:
     networks:
       - default
     ports:
-      - 8080:8080
-      - 8081:8081
+      - "8080:8080"
+      - "8081:8081"
+      
+  migrator:
+    build:
+      context: ..
+      dockerfile: ./Migrator/Dockerfile
+    environment:
+      - ConnectionString=Host=database;Port=5432;Username=postgres;Password=password;Database=todos
+    networks:
+      - default
+    depends_on:
+      database:
+        condition: service_healthy
+        
+  database:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=todos
+    healthcheck:
+       test: ["CMD", "pg_isready", "-q", "-d", "todos", "-U", "postgres"]
+       interval: 1s
+       timeout: 60s
+       retries: 60
+       start_period: 80s
