@@ -7,6 +7,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Migrator/Migrator.csproj", "Migrator/"]
 COPY ["Database/Database.csproj", "Database/"]
+COPY Directory.*.props .
 RUN dotnet restore "Migrator/Migrator.csproj"
 COPY . .
 WORKDIR "/src/Migrator"

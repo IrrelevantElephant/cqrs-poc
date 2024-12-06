@@ -1,8 +1,13 @@
 using Database;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Shared;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var appSettings = builder.Configuration.Get<AppSettings>();
+builder.ConfigureOpenTelemetry("api", "1.0");
+
+builder.Services.ConfigureMassTransit(appSettings!.MassTransitConfig);
 
 builder.Services.AddCors(options =>
 {

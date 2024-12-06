@@ -8,6 +8,8 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["./Bff/Bff.csproj", "Bff/"]
+COPY ["./Shared/Shared.csproj", "Shared/"]
+COPY Directory.*.props .
 RUN dotnet restore "Bff/Bff.csproj"
 COPY . .
 WORKDIR "/src/Bff"

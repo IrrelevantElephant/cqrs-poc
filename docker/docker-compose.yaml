@@ -19,6 +19,10 @@ services:
       context: ..
       dockerfile: ./Bff/Dockerfile
     environment:
+      - MassTransitConfig__Username=guest
+      - MassTransitConfig__Password=guest
+      - MassTransitConfig__Uri=rabbit
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcol:4317
       - ConnectionString=Host=database;Port=5432;Username=postgres;Password=password;Database=todos
     networks:
       - default
@@ -55,3 +59,72 @@ services:
        timeout: 60s
        retries: 60
        start_period: 80s
+
+  rabbit:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 30s
+      retries: 5
+
+  otelcol:
+    image: otel/opentelemetry-collector-contrib:0.102.0
+    container_name: otel-col
+    command: [ "--config=/etc/otelcol-config.yml" ]
+    volumes:
+      - ./otel-collector/otelcol-config.yml:/etc/otelcol-config.yml
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+      - "9000:9000"
+      - "8888:8888"
+
+  tempo:
+    image: grafana/tempo:latest
+    ports:
+      - "3200:3200"
+    volumes:
+      - ./tempo/tempo.yaml:/etc/tempo.yaml
+    command: [ "-config.file=/etc/tempo.yaml" ]
+
+  loki:
+    image: grafana/loki:3.0.0
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+     - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+     - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - ./grafana/:/etc/grafana/provisioning
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f localhost:3000/api/health && echo 'ready'"]
+      interval: 10s
+      retries: 30
+    depends_on:
+      tempo:
+        condition: service_started
+      loki:
+        condition: service_started
+      prometheus:
+        condition: service_started
+      otelcol:
+        condition: service_started
