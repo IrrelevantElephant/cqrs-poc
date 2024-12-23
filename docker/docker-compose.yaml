@@ -32,6 +32,53 @@ services:
     depends_on:
       migrator:
         condition: service_completed_successfully
+    develop:
+      watch:
+        - path: ../Bff/
+          action: rebuild
+
+  writeapi:
+    build:
+      context: ..
+      dockerfile: ./WriteApi/Dockerfile
+    environment:
+      - MassTransitConfig__Username=guest
+      - MassTransitConfig__Password=guest
+      - MassTransitConfig__Uri=rabbit
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcol:4317
+      - ConnectionString=Host=database;Port=5432;Username=postgres;Password=password;Database=todos
+    networks:
+      - default
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      migrator:
+        condition: service_completed_successfully
+    develop:
+      watch:
+        - path: ../WriteApi/
+          action: rebuild
+
+  readapi:
+    build:
+      context: ..
+      dockerfile: ./ReadApi/Dockerfile
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcol:4317
+      - ConnectionString=Host=database;Port=5432;Username=postgres;Password=password;Database=todos
+    networks:
+      - default
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      migrator:
+        condition: service_completed_successfully
+    develop:
+      watch:
+        - path: ../ReadApi/
+          action: rebuild
       
   migrator:
     build:
@@ -44,6 +91,10 @@ services:
     depends_on:
       database:
         condition: service_healthy
+    develop:
+      watch:
+        - path: ../Migrator/
+          action: rebuild
         
   database:
     image: postgres

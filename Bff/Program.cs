@@ -5,7 +5,7 @@ using Shared;
 var builder = WebApplication.CreateBuilder(args);
 
 var appSettings = builder.Configuration.Get<AppSettings>();
-builder.ConfigureOpenTelemetry("api", "1.0");
+builder.ConfigureOpenTelemetry("bff", "1.0");
 
 builder.Services.ConfigureMassTransit(appSettings!.MassTransitConfig);
 
