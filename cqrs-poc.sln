@@ -20,6 +20,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messages", "Messages\Messag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{C3670840-23FC-445B-8DCE-22DF1EDE8048}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WriteApi", "WriteApi\WriteApi.csproj", "{C56DDEF2-5277-4E52-B823-A10B4C897C97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadApi", "ReadApi\ReadApi.csproj", "{3D1B72B8-2A4D-4DD2-9C63-CF37CBEEF231}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,5 +57,13 @@ Global
 		{C3670840-23FC-445B-8DCE-22DF1EDE8048}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3670840-23FC-445B-8DCE-22DF1EDE8048}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3670840-23FC-445B-8DCE-22DF1EDE8048}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C56DDEF2-5277-4E52-B823-A10B4C897C97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C56DDEF2-5277-4E52-B823-A10B4C897C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C56DDEF2-5277-4E52-B823-A10B4C897C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C56DDEF2-5277-4E52-B823-A10B4C897C97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D1B72B8-2A4D-4DD2-9C63-CF37CBEEF231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D1B72B8-2A4D-4DD2-9C63-CF37CBEEF231}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D1B72B8-2A4D-4DD2-9C63-CF37CBEEF231}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D1B72B8-2A4D-4DD2-9C63-CF37CBEEF231}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

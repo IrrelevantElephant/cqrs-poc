@@ -2,7 +2,7 @@
 
 public class Todo
 {
-    public string Id { get; set; }
-    public string Name { get; set; }
+    public required string Id { get; init; }
+    public required string Name { get; set; }
     public bool Completed { get; set; }
 }

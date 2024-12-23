@@ -5,9 +5,10 @@ A simple todo application using CQRS concepts:
 ```mermaid
 flowchart TD;
     UI-->BFF;
-    BFF-- writes (as commands) --->MessageQueue([MessageQueue]);
-    BFF-- reads --->QueryApi;
-    QueryApi-->Cache[(Cache)]
+    BFF-- writes --->WriteApi;
+    WriteApi-- sends commands --->MessageQueue([MessageQueue]);
+    BFF-- reads --->ReadApi;
+    ReadApi-->Cache[(Cache)]
     MessageQueue-- handles CacheUpdated events --->WebSocketHub
     MessageQueue-- handles commands --->Handlers
     Handlers-- publishes PersistenceUpdated events --->MessageQueue
