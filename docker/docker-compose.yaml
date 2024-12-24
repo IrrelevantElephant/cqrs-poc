@@ -19,10 +19,6 @@ services:
       context: ..
       dockerfile: ./Bff/Dockerfile
     environment:
-      - MassTransitConfig__Username=guest
-      - MassTransitConfig__Password=guest
-      - MassTransitConfig__Uri=rabbit
-      - ConnectionString=Host=database;Port=5432;Username=postgres;Password=password;Database=todos
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcol:4317
       - WriteApiAddress=http://writeapi:8080
       - ReadApiAddress=http://readapi:8080
@@ -57,9 +53,33 @@ services:
     depends_on:
       migrator:
         condition: service_completed_successfully
+      rabbit:
+        condition: service_healthy
     develop:
       watch:
         - path: ../WriteApi/
+          action: rebuild
+          
+  handlers:
+    build:
+      context: ..
+      dockerfile: ./Handlers/Dockerfile
+    environment:
+      - MassTransitConfig__Username=guest
+      - MassTransitConfig__Password=guest
+      - MassTransitConfig__Uri=rabbit
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcol:4317
+      - ConnectionString=Host=database;Port=5432;Username=postgres;Password=password;Database=todos
+    networks:
+      - default
+    depends_on:
+      migrator:
+        condition: service_completed_successfully
+      rabbit:
+        condition: service_healthy
+    develop:
+      watch:
+        - path: ../Handlers/
           action: rebuild
 
   readapi:
