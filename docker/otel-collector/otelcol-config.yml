@@ -2,7 +2,9 @@ receivers:
   otlp:
     protocols:
       grpc:
+        endpoint: 0.0.0.0:4317
       http:
+        endpoint: 0.0.0.0:4318
         cors:
           allowed_origins:
             - "http://*"
@@ -13,7 +15,11 @@ exporters:
   otlp:
     endpoint: tempo:4317
     tls:
-      insecure: true  
+      insecure: true
+  otlphttp/logs:
+    endpoint: http://loki:3100/otlp
+    tls:
+      insecure: true
   loki:
     endpoint: http://loki:3100/loki/api/v1/push
   prometheus:
@@ -31,7 +37,7 @@ service:
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [debug, loki]
+      exporters: [debug, otlphttp/logs]
     metrics:
       receivers: [otlp]
       processors: [batch]
