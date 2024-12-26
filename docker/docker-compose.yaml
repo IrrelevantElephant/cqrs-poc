@@ -82,21 +82,46 @@ services:
         - path: ../Handlers/
           action: rebuild
 
+  cacheupdater:
+    build:
+      context: ..
+      dockerfile: ./CacheUpdater/Dockerfile
+    environment:
+      - MassTransitConfig__Username=guest
+      - MassTransitConfig__Password=guest
+      - MassTransitConfig__Uri=rabbit
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcol:4317
+      - ConnectionString=Host=database;Port=5432;Username=postgres;Password=password;Database=todos
+      - CacheConnectionString=cache
+    networks:
+      - default
+    depends_on:
+      migrator:
+        condition: service_completed_successfully
+      rabbit:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+    develop:
+      watch:
+        - path: ../CacheUpdater/
+          action: rebuild
+
   readapi:
     build:
       context: ..
       dockerfile: ./ReadApi/Dockerfile
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcol:4317
-      - ConnectionString=Host=database;Port=5432;Username=postgres;Password=password;Database=todos
+      - CacheConnectionString=cache
     networks:
       - default
     ports:
       - "8084:8080"
       - "8085:8081"
     depends_on:
-      migrator:
-        condition: service_completed_successfully
+      cache:
+        condition: service_healthy
     develop:
       watch:
         - path: ../ReadApi/
@@ -133,6 +158,15 @@ services:
        retries: 60
        start_period: 80s
 
+  cache:
+    image: redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
   rabbit:
     image: rabbitmq:3-management-alpine
     ports:
@@ -145,8 +179,7 @@ services:
       retries: 5
 
   otelcol:
-    image: otel/opentelemetry-collector-contrib:0.102.0
-    container_name: otel-col
+    image: otel/opentelemetry-collector-contrib:0.103.0
     command: [ "--config=/etc/otelcol-config.yml" ]
     volumes:
       - ./otel-collector/otelcol-config.yml:/etc/otelcol-config.yml
@@ -165,7 +198,7 @@ services:
     command: [ "-config.file=/etc/tempo.yaml" ]
 
   loki:
-    image: grafana/loki:3.0.0
+    image: grafana/loki:3.3.2
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml

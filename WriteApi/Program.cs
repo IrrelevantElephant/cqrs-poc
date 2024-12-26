@@ -35,7 +35,7 @@ app.MapDelete("/api/todos/{id}",
     async (string id, [FromServices]IBus bus, CancellationToken cancellationToken) =>
     {
         await bus.Publish(new DeleteTodoCommand(id), cancellationToken);
-        return Results.NoContent();
+        return Results.Ok();
     });
 
 app.Run();

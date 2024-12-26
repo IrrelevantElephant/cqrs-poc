@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WriteApi", "WriteApi\WriteA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadApi", "ReadApi\ReadApi.csproj", "{3D1B72B8-2A4D-4DD2-9C63-CF37CBEEF231}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheUpdater", "CacheUpdater\CacheUpdater.csproj", "{BFBB0692-7B56-43AF-9D5A-85B30FCD1064}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,5 +67,9 @@ Global
 		{3D1B72B8-2A4D-4DD2-9C63-CF37CBEEF231}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D1B72B8-2A4D-4DD2-9C63-CF37CBEEF231}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D1B72B8-2A4D-4DD2-9C63-CF37CBEEF231}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFBB0692-7B56-43AF-9D5A-85B30FCD1064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFBB0692-7B56-43AF-9D5A-85B30FCD1064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFBB0692-7B56-43AF-9D5A-85B30FCD1064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFBB0692-7B56-43AF-9D5A-85B30FCD1064}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

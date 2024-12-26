@@ -18,3 +18,11 @@ flowchart TD;
     Handlers-- persists normalised data --->Database[(Database)]
     WebSocketHub-- prompts UI to reload --->UI
 ```
+
+## Run
+
+To run the application in watch mode:
+
+```shell
+docker compose -f docker/docker-compose.yaml up --watch
+```
