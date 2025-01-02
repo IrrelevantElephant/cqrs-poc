@@ -26,3 +26,10 @@ To run the application in watch mode:
 ```shell
 docker compose -f docker/docker-compose.yaml up --watch
 ```
+
+Navigate to http://localhost:8000 to view the UI
+
+Grafana for logs, traces & metrics @ http://localhost:3000
+
+> [!WARNING]
+> Known issue: currently the only way to hydrate the cache with the seed data is to create a new todo item
