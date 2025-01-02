@@ -30,6 +30,8 @@ ArgumentNullException.ThrowIfNull(appSettings);
 builder.Services.ConfigureMassTransit(appSettings.MassTransitConfig, configurator =>
 {
     configurator.AddConsumer<TodoCreatedHandler>();
+    configurator.AddConsumer<TodoDeletedHandler>();
+    configurator.AddConsumer<TodoUpdatedHandler>();
 });
 
 var host = builder.Build();

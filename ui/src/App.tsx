@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FilterButton from "./components/FilterButton";
 import Form from "./components/Form";
 import Todo, { TodoProps } from "./components/Todo";
 import { nanoid } from "nanoid";
+import Connector from "./signalr-connection";
 
 const FILTER_MAP: {
   [key: string]: (task: TodoProps) => boolean | undefined;
@@ -27,6 +28,12 @@ const baseApi = getApiUrl();
 const App = () => {
   const [currentTasks, setTasks] = useState<Array<any>>([]);
   const [loadingTasks, setLoadingTasks] = useState(false);
+
+  const { events } = Connector();
+
+  useEffect(() => {
+    events((_) => retrieveClickHandler());
+  });
 
   const retrieveClickHandler = () => {
     setLoadingTasks(true);

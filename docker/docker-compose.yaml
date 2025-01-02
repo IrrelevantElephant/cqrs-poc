@@ -126,6 +126,28 @@ services:
       watch:
         - path: ../ReadApi/
           action: rebuild
+          
+  websockethub:
+    build:
+      context: ..
+      dockerfile: ./WebSocketHub/Dockerfile
+    environment:
+      - MassTransitConfig__Username=guest
+      - MassTransitConfig__Password=guest
+      - MassTransitConfig__Uri=rabbit
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcol:4317
+    networks:
+      - default
+    ports:
+      - "8086:8080"
+      - "8087:8081"
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    develop:
+      watch:
+        - path: ../WebSocketHub/
+          action: rebuild
       
   migrator:
     build:

@@ -7,18 +7,18 @@ using StackExchange.Redis;
 
 namespace CacheUpdater;
 
-public class TodoCreatedHandler : IConsumer<TodoCreatedEvent>
+public class TodoDeletedHandler : IConsumer<TodoDeletedEvent>
 {
     private readonly IDatabase _cache;
     private readonly TodoContext _todoContext;
 
-    public TodoCreatedHandler(IDatabase cache, TodoContext todoContext)
+    public TodoDeletedHandler(IDatabase cache, TodoContext todoContext)
     {
         _cache = cache;
         _todoContext = todoContext;
     }
 
-    public async Task Consume(ConsumeContext<TodoCreatedEvent> context)
+    public async Task Consume(ConsumeContext<TodoDeletedEvent> context)
     {
         var todos = await _todoContext.Todos.ToListAsync(context.CancellationToken);
         var todoJson = JsonSerializer.Serialize(todos);

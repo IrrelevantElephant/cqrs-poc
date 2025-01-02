@@ -2,11 +2,13 @@ using Database;
 using MassTransit;
 using Messages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Handlers;
 
-internal class DeleteTodoConsumer(TodoContext todoContext) : IConsumer<DeleteTodoCommand>
+internal class DeleteTodoConsumer(TodoContext todoContext, ILogger<DeleteTodoConsumer> logger) : IConsumer<DeleteTodoCommand>
 {
+    private ILogger<DeleteTodoConsumer> _logger = logger;
     public async Task Consume(ConsumeContext<DeleteTodoCommand> context)
     {
         var command = context.Message;
@@ -15,6 +17,7 @@ internal class DeleteTodoConsumer(TodoContext todoContext) : IConsumer<DeleteTod
 
         if (todoToDelete == null)
         {
+            _logger.LogError("Todo with id {TodoId} not found.", command.Id);
             return;
         }
 
