@@ -1,5 +1,7 @@
 ﻿using CacheUpdater;
 using Database;
+using MassTransit;
+using Messages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +34,7 @@ builder.Services.ConfigureMassTransit(appSettings.MassTransitConfig, configurato
     configurator.AddConsumer<TodoCreatedHandler>();
     configurator.AddConsumer<TodoDeletedHandler>();
     configurator.AddConsumer<TodoUpdatedHandler>();
+    configurator.AddConsumer<CacheEmptyHandler>();
 });
 
 var host = builder.Build();

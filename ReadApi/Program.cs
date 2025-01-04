@@ -1,7 +1,9 @@
-using System.Text.Json;
+using MassTransit;
+using Messages;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
 using StackExchange.Redis;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,9 @@ var redis = ConnectionMultiplexer.Connect(cacheSettings.CacheConnectionString);
 var database = redis.GetDatabase();
 builder.Services.AddSingleton(database);
 
+var appSettings = builder.Configuration.Get<AppSettings>();
+builder.Services.ConfigureMassTransit(appSettings!.MassTransitConfig);
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -23,9 +28,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapGet("/api/todos",
-    async ([FromServices]IDatabase cache, CancellationToken cancellationToken) =>
+    async ([FromServices]IDatabase cache, [FromServices]IBus bus, CancellationToken cancellationToken) =>
     {
         var cachedTodos = await cache.StringGetAsync("GET");
+
+        if (cachedTodos.IsNull)
+        {
+            await bus.Publish(new CacheEmptyEvent(), cancellationToken);
+            return [];
+        }
+
         var todos = JsonSerializer.Deserialize<List<Todo>>(cachedTodos);
         return todos;
     });

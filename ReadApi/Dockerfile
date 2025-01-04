@@ -8,7 +8,6 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["ReadApi/ReadApi.csproj", "ReadApi/"]
-COPY ["Database/Database.csproj", "Database/"]
 COPY ["Shared/Shared.csproj", "Shared/"]
 COPY ["Messages/Messages.csproj", "Messages/"]
 COPY Directory.*.props .
