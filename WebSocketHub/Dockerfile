@@ -8,6 +8,9 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["WebSocketHub/WebSocketHub.csproj", "WebSocketHub/"]
+COPY ["Shared/Shared.csproj", "Shared/"]
+COPY ["Messages/Messages.csproj", "Messages/"]
+COPY Directory.*.props .
 RUN dotnet restore "WebSocketHub/WebSocketHub.csproj"
 COPY . .
 WORKDIR "/src/WebSocketHub"
