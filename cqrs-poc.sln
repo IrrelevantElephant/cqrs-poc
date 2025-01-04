@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bff", "Bff\Bff.csproj", "{2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{BFDD0A0E-F1CD-4FC8-91B9-26D3045C8274}"
 	ProjectSection(SolutionItems) = preProject
-		docker\docker-compose.yam = docker\docker-compose.yaml
+		docker\docker-compose.yaml = docker\docker-compose.yaml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{248440CA-0BC7-4901-9811-2FC05626ECA9}"
@@ -28,13 +28,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheUpdater", "CacheUpdate
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSocketHub", "WebSocketHub\WebSocketHub.csproj", "{8F558485-4784-4822-A022-CE603F274963}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A3EFC28D-4ABC-43E4-9960-F2B04D7ED432}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{25A6D589-15B0-4BF7-9488-6CDCBDD04A5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -77,5 +83,8 @@ Global
 		{8F558485-4784-4822-A022-CE603F274963}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F558485-4784-4822-A022-CE603F274963}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F558485-4784-4822-A022-CE603F274963}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
