@@ -1,8 +1,8 @@
 services:
   ui:
     build:
-      context: ../ui
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: ./ui/Dockerfile
     networks:
       - default
     ports:
