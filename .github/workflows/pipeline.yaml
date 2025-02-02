@@ -31,7 +31,7 @@ jobs:
     strategy:
       matrix:
         # image represents the name of the image produced as well as the directory containing its Dockerfile
-        image: [debug]
+        image: [Handlers]
         runner: ['ubuntu-24.04-arm']
     runs-on: ${{ matrix.runner }}
     needs: tag
