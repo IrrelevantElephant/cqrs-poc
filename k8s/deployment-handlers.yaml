@@ -1,0 +1,19 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: handlers
+  namespace: todo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: handlers
+  template:
+    metadata:
+      labels:
+        app: handlers
+    spec:
+      containers:
+        - name: handlers
+          image: handlers-image:latest

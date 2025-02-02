@@ -1,0 +1,19 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrator
+  namespace: todo-app
+spec:
+  template:
+    metadata:
+      labels:
+        app: migrator
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: migrator
+          image: migrator-image:latest
+          env:
+            - name: ConnectionString
+              value: "Host=database;Port=5432;Username=postgres;Password=password;Database=todos"
