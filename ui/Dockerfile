@@ -1,6 +1,10 @@
 FROM node:18-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+
+# https://github.com/misskey-dev/misskey/issues/15386#issuecomment-2629716327
+ENV COREPACK_DEFAULT_TO_LATEST=0
+
 RUN corepack enable
 COPY ./ui /app
 WORKDIR /app
