@@ -2,7 +2,8 @@ name: Pipeline
 
 on:
   push:
-    branches: ["main"]
+    # todo: remove this branch
+    branches: ["main", "wip/k8s"]
 
 env:
   IMAGE_REGISTRY: rg.fr-par.scw.cloud/cqrs-poc
