@@ -32,8 +32,7 @@ jobs:
       matrix:
         # image represents the name of the image produced as well as the directory containing its Dockerfile
         image: [ui, Bff, WriteApi, Handlers, CacheUpdater, ReadApi, WebSocketHub, Migrator]
-        runner: ['ubuntu-24.04-arm']
-    runs-on: ${{ matrix.runner }}
+    runs-on: ubuntu-24.04
     needs: tag
     steps:
       - name: Login to Scaleway Container Registry
@@ -61,6 +60,7 @@ jobs:
           context: .
           file: ./${{ matrix.image }}/Dockerfile
           cache-from: type=registry,ref=${{ env.IMAGE_REGISTRY }}/${{ matrix.image }}:latest
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             ${{ env.BASETAG }}:latest
