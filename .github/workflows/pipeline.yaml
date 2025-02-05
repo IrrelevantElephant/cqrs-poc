@@ -2,8 +2,7 @@ name: Pipeline
 
 on:
   push:
-    # todo: remove this branch
-    branches: ["main", "wip/k8s"]
+    branches: ["main"]
     paths-ignore:
       - 'README.md'
       - 'k8s/**'
