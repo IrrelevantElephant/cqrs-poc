@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: handlers
+  namespace: todo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: handlers
+  template:
+    metadata:
+      labels:
+        app: handlers
+    spec:
+      containers:
+        - name: handlers
+          image: rg.fr-par.scw.cloud/cqrs-poc/handlers:0.4.1
+          env:
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector:4317"
+            - name: ConnectionString
+              value: "Host=postgres;Port=5432;Username=postgres;Password=password;Database=todos"
+            - name: MassTransitConfig__Username
+              value: guest
+            - name: MassTransitConfig__password
+              value: guest
+            - name: MassTransitConfig__Uri
+              value: rabbitmq
+      imagePullSecrets:
+        - name: regcred

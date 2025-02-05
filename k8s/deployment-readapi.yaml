@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: readapi
+  namespace: todo-app
+spec:
+  selector:
+    app: readapi
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: readapi
+  namespace: todo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: readapi
+  template:
+    metadata:
+      labels:
+        app: readapi
+    spec:
+      containers:
+        - name: readapi
+          image: rg.fr-par.scw.cloud/cqrs-poc/readapi:0.4.1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector:4317"
+            - name: CacheConnectionString
+              value: "redis"
+            - name: MassTransitConfig__Username
+              value: guest
+            - name: MassTransitConfig__password
+              value: guest
+            - name: MassTransitConfig__Uri
+              value: rabbitmq
+      imagePullSecrets:
+        - name: regcred

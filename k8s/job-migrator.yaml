@@ -1,0 +1,21 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrator
+  namespace: todo-app
+spec:
+  template:
+    metadata:
+      labels:
+        app: migrator
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: migrator
+          image: rg.fr-par.scw.cloud/cqrs-poc/migrator:0.4.1
+          env:
+            - name: ConnectionString
+              value: "Host=postgres;Port=5432;Username=postgres;Password=password;Database=todos"
+      imagePullSecrets:
+        - name: regcred
