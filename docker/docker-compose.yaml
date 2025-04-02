@@ -7,6 +7,8 @@ services:
       - default
     ports:
       - "8000:80"
+    environment:
+      - SignalrConnection=http://localhost:8086/hub
     develop:
       watch:
         - path: ../ui/

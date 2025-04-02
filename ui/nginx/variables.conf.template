@@ -1,0 +1,3 @@
+map "" $envfile {
+  default "var SIGNALR_HUB_URL = \"$SignalrConnection\";";
+}

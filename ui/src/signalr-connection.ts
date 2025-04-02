@@ -1,6 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 
-const URL = import.meta.env.VITE_HUB_URL ?? "http://localhost:8086/hub";
+const url = (window as any).SIGNALR_HUB_URL;
 
 class Connector {
   private connection: signalR.HubConnection;
@@ -11,7 +11,7 @@ class Connector {
 
   constructor() {
     this.connection = new signalR.HubConnectionBuilder()
-      .withUrl(URL)
+      .withUrl(url)
       .withAutomaticReconnect()
       .build();
     this.connection.start().catch((err) => document.write(err));
