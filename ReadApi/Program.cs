@@ -38,7 +38,7 @@ app.MapGet("/api/todos",
             return [];
         }
 
-        var todos = JsonSerializer.Deserialize<List<Todo>>(cachedTodos);
+        var todos = JsonSerializer.Deserialize<List<Todo>>((string)cachedTodos);
         return todos;
     });
 
